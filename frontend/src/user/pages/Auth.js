@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../../shared/components/FormElements/Input";
 
 import {
@@ -12,7 +12,8 @@ import Button from "../../shared/components/FormElements/Button";
 import "./Auth.css";
 
 const Auth = () => {
-  const [formState, inputHandler] = useForm(
+  const [isLoginMode, setIsLoginMode] = useState(true);
+  const [formState, inputHandler, setFormData] = useForm(
     {
       email: {
         value: "",
@@ -31,11 +32,43 @@ const Auth = () => {
     console.log(formState.inputs);
   };
 
+  const switchHandler = () => {
+    if (!isLoginMode) {
+      setFormData(
+        { ...formState.inputs, name: undefined },
+        formState.inputs.email.isValid && formState.inputs.password.isValid
+      );
+    } else {
+      setFormData(
+        {
+          ...formState.inputs,
+          name: {
+            value: "",
+            isValid: false,
+          },
+        },
+        false
+      );
+    }
+    setIsLoginMode((prevMode) => !prevMode);
+  };
+  console.log(formState.isValid);
   return (
     <Card className="authentication">
       <h2 className="center">Login Form</h2>
       <hr></hr>
       <form className="place-form" onSubmit={handlerSubmit}>
+        {!isLoginMode && (
+          <Input
+            id="name"
+            element="input"
+            type="text"
+            label="Your Name"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter valid name."
+            onInput={inputHandler}
+          />
+        )}
         <Input
           id="email"
           element="input"
@@ -55,7 +88,10 @@ const Auth = () => {
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
-          LOGIN
+          {isLoginMode ? "LOGIN" : "SIGN UP"}
+        </Button>
+        <Button inverse onClick={switchHandler}>
+          SWITCH TO {isLoginMode ? "SIGN UP" : "LOGIN"}
         </Button>
       </form>
     </Card>
