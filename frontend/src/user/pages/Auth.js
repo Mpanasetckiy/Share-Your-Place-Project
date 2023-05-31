@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Input from "../../shared/components/FormElements/Input";
 
 import {
@@ -9,9 +9,11 @@ import {
 import Card from "../../shared/components/UIElements/Card";
 import { useForm } from "../../shared/hooks/form-hook";
 import Button from "../../shared/components/FormElements/Button";
+import { AuthContext } from "../../shared/components/context/auth-context";
 import "./Auth.css";
 
 const Auth = () => {
+  const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -30,8 +32,9 @@ const Auth = () => {
   const handlerSubmit = (event) => {
     event.preventDefault();
     console.log(formState.inputs);
+    auth.login();
   };
-
+  console.log(auth.isLoggedIn);
   const switchHandler = () => {
     if (!isLoginMode) {
       setFormData(
@@ -52,7 +55,7 @@ const Auth = () => {
     }
     setIsLoginMode((prevMode) => !prevMode);
   };
-  console.log(formState.isValid);
+
   return (
     <Card className="authentication">
       <h2 className="center">Login Form</h2>
