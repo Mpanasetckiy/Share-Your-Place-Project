@@ -54,6 +54,13 @@ const Input = (props) => {
       <input
         id={props.id}
         type={props.type}
+        autoComplete={
+          props.type === "password"
+            ? "current-password"
+            : props.type === "email"
+            ? "username"
+            : null
+        }
         placeholder={props.placeholder}
         onChange={changeHandler}
         onBlur={touchHandler}
