@@ -16,6 +16,8 @@ const PlaceItem = (props) => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
+  console.log(props.address, props.coordinates);
+
   const openMapHandler = () => {
     setShowMap(true);
   };
