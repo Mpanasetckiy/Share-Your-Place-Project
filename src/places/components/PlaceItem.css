@@ -1,5 +1,6 @@
 .place-item {
   margin: 1rem 0;
+  max-width: 40rem;
 }
 
 .place-item__content {
